@@ -14,3 +14,5 @@ isBool = 5 < 2;
 let numbers = [1, 2, 3, 4];
 isBool = numbers.includes(100);
 // usBool = 11;
+
+let uniqueSymbol: symbol = Symbol('mySymbol');
