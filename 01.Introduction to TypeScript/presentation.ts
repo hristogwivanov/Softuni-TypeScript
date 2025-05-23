@@ -16,3 +16,33 @@ isBool = numbers.includes(100);
 // usBool = 11;
 
 let uniqueSymbol: symbol = Symbol('mySymbol');
+let anotherSymbol: symbol = Symbol( 'mySymbol');
+console.log(uniqueSymbol === anotherSymbol);
+
+let undefinedValue1;
+let undefinedValue2: undefined = undefined; 
+let person: null = null;
+
+let arrayOfStr: string[]=[];
+arrayOfStr.push('Hello'); // valid
+// arrayOfStr.push(11);
+
+let tuple: [string, number];
+tuple = ['Hello', 11]; 
+// tuple = [11, 'Hello'];
+
+
+enum DaysOfTheWeek{
+    Monday = 1,
+    Tuesday,
+};
+
+let day: DaysOfTheWeek;
+day = DaysOfTheWeek.Monday;
+console.log(day);
+if (day === DaysOfTheWeek.Monday) {
+    console.log('I hope you all had a great weekend!');
+}
+
+
+
