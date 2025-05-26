@@ -44,5 +44,15 @@ if (day === DaysOfTheWeek.Monday) {
     console.log('I hope you all had a great weekend!');
 }
 
+let a: any = 'hello';
+let b: unknown = 'hello';
+a = 11; 
+b = 12;
+console.log(a.length);
+// console.log(b.length);
 
+greet('message string');
 
+function greet(message: string): void {
+    console.log(message);
+}

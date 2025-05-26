@@ -37,4 +37,14 @@ console.log(day);
 if (day === DaysOfTheWeek.Monday) {
     console.log('I hope you all had a great weekend!');
 }
+let a = 'hello';
+let b = 'hello';
+a = 11;
+b = 12;
+console.log(a.length);
+// console.log(b.length);
+greet('message string');
+function greet(message) {
+    console.log(message);
+}
 //# sourceMappingURL=presentation.js.map
