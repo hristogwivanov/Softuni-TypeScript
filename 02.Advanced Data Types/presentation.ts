@@ -46,12 +46,12 @@ errorCode = 500;
 // -Objects
 // -Advanced types
 
-type Age = number; //primitive
-type User = { age: Age}; //uses the type alias Age
-type Person = { name: string }; // object
-type Combined = User & Person; // advanced type
+// type Age = number; //primitive
+// type User = { age: Age}; //uses the type alias Age
+// type Person = { name: string }; // object
+// type Combined = User & Person; // advanced type
 
-const user: Combined = { name: 'John', age: 20 };
+// const user: Combined = { name: 'John', age: 20 };
 
 
 //"keyof" TypeScript Operator
@@ -61,8 +61,8 @@ const user: Combined = { name: 'John', age: 20 };
 // type Point = { x: number; y: number;}
 // type PointKeys = keyof Point; // 'x' | 'y'
 
-type Colors = {red: string; blue: string; };
-type ColorKeys = keyof Colors; //'red' | 'blue'
+// type Colors = {red: string; blue: string; };
+// type ColorKeys = keyof Colors; //'red' | 'blue'
 
 
 // "in" Usage
@@ -78,19 +78,80 @@ let val: A | B = {age: 5};
 if('age' in val) console.log(val.age);
 
 
-//"typeof" Usage
-//TypeScript can also levarage the JS typeof operator to extract TS type information from variables
-//This does not change the runtime functionality
-type Point = {x: number; y: number; };
-let point1: Point = {x: 12, y: 4};
-type Point2 = typeof point1; //{x: number; y: number; }
+// //"typeof" Usage
 
-console.log(typeof point1) //object
-type Color = {red: number};
-let color1 = {red: 20};
+// //TypeScript can also levarage the JS typeof operator to extract TS type information from variables
+// //This does not change the runtime functionality
+// type Point = {x: number; y: number; };
+// let point1: Point = {x: 12, y: 4};
+// type Point2 = typeof point1; //{x: number; y: number; }
 
-//true sinec both are objects
-console.log(typeof point1 == typeof color1) //true
+// console.log(typeof point1) //object
+// type Color = {red: number};
+// let color1 = {red: 20};
+
+// //true sinec both are objects
+// console.log(typeof point1 == typeof color1) //true
+
+
+//Mapped Types
+
+//Creates new types by transforming each property of an existing type
+
+type Point = { x: number; y: number;}
+type Colors = { red: string; blue: string; };
+
+type PartialPoint = {[K in keyof Point]?: Point[K]};
+// { x?: number; y?: number; }
+
+type ReadonlyColors = 
+{ readonly [K in keyof Colors]: Colors[K] };
+// { readonly red: string; readonly blue: string}
+
+
+//Recursive Types
+
+//Recursive types are vital for prepresenting complex self-referential data structures
+type TreeNode = {
+    value: number;
+    left?: TreeNode;
+    right?: TreeNode;
+}
+
+let root: TreeNode = {
+    value: 20,
+    left: {value: 5} //also of type TreeNode
+};
+
+
+//Interfaces
+
+interface Person {
+    fullName: string,
+    email: string;
+}
+
+let thomas: Person = {
+    fullName: 'Thomas Doe',
+    email: 'thomas@test.test'
+}
+
+console.log(thomas.fullName) //Thomas Doe
+
+interface Calculator {
+    (numOne: number, numTwo: number, operation: string): number}
+    
+    let calc: Calculator = function (a: number, b: number, operation: string): number {
+        let result: number = 0;
+        const addition = () => result = a + b; 
+        const parser: { [key: string]: () => number } = {
+            'addition': addition,
+        }
+        parser[operation]();
+        return result;
+    }
+
+
 
 
 

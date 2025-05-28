@@ -29,14 +29,26 @@ status2 = "success";
 //Number Literal Type
 let errorCode;
 errorCode = 500;
-const user = { name: 'John', age: 20 };
 let val = { age: 5 };
 //used as a type guard to narrow 'val' to type B 
 if ('age' in val)
     console.log(val.age);
-let point1 = { x: 12, y: 4 };
-console.log(typeof point1); //object
-let color1 = { red: 20 };
-//true sinec both are objects
-console.log(typeof point1 == typeof color1); //true
+let root = {
+    value: 20,
+    left: { value: 5 } //also of type TreeNode
+};
+let thomas = {
+    fullName: 'Thomas Doe',
+    email: 'thomas@test.test'
+};
+console.log(thomas.fullName); //Thomas Doe
+let calc = function (a, b, operation) {
+    let result = 0;
+    const addition = () => result = a + b;
+    const parser = {
+        'addition': addition,
+    };
+    parser[operation]();
+    return result;
+};
 //# sourceMappingURL=presentation.js.map
