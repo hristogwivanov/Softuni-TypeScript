@@ -152,6 +152,33 @@ interface Calculator {
     }
 
 
+//Implemented by Classes
+
+//Interfaces can be implemented by classes using the keyword implement
+//A class that implements an interface must have all the properties defined in the interface
+//Describes the public side of the class
+//interface Person {...}
+//class Teacher implements Person {...}
+
+interface ClockLayout{
+    hour: number;
+    minute: number;
+    showTime(h: number, m: number): string;
+}
+
+class Clock implements ClockLayout {
+    public hour;
+    public minute;
+    constructor(h: number, m: number) {
+        this.hour = h; 
+        this.minute = m; 
+    }
+    showTime() {
+        return `Current time: ${this.hour}:${this.minute}`;
+    }
+}
+
+
 
 
 

@@ -51,4 +51,15 @@ let calc = function (a, b, operation) {
     parser[operation]();
     return result;
 };
+class Clock {
+    hour;
+    minute;
+    constructor(h, m) {
+        this.hour = h;
+        this.minute = m;
+    }
+    showTime() {
+        return `Current time: ${this.hour}:${this.minute}`;
+    }
+}
 //# sourceMappingURL=presentation.js.map
