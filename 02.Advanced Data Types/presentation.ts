@@ -179,6 +179,35 @@ class Clock implements ClockLayout {
 }
 
 
+//Extending Interfaces
+
+//Interfaces can extend classes and other interfaces
+    //Extending classes
+        //The extended interface inherits all of the members of the class including private and protected members
+        //The interface does not inherit the implementations of the members (e.g. mehtod implementations)
+    //Extending other interfaces
+        //Creates a combination of all interfaces
+
+//Example: Extending Interfaces
+
+class Computer {
+    public RAM; 
+    constructor(r: number) { this.RAM = r; }
+    showParams(): string { return `${this.RAM}`; }
+}
+interface Parts extends Computer {
+    CPU: string;
+    showParts(): string;
+}
+class PC extends Computer implements Parts {
+    public keyboard;
+    public CPU;
+    constructor(RAM: number, CPU: string) { super(RAM); this.CPU = CPU; }
+    showParts() {
+        return `${this.RAM} ${this.CPU}`
+    }
+}
+
 
 
 
