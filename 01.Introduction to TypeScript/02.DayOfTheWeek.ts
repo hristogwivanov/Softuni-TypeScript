@@ -1,5 +1,5 @@
 enum days {
-    Monday =1,
+    Monday = 1,
     Tuesday,
     Wednesday,
     Thursday,
