@@ -85,4 +85,27 @@ class PC extends Computer {
 }
 let pesho = new PC(16, "Ryzen", "cherry");
 console.log(pesho.showParts());
+//Interfaces vs Types
+//In many cases, they can be used interchangeably depending on personal preference
+// Interfaces: 
+// - defines a contract that the object must adhere to. 
+// Types: 
+// - create new name for primitive data types
+// - define union, tuple and more complex types and many more
+//Interface example 
+// interface Person {
+//     firstName: string;
+//     lastName: string;
+//     greeting: () => string;
+// }
+//Type
+// type Person = {
+//     firstName: string;
+//     lastName: string;
+//     greeting: () => string;
+// }
+//TypeScript provides a lot more advanced data types and advanced typing for complex use cases: 
+// - union, intersection types and variety of literals
+// - type aliases, recursive types, "keyof" and many more
+// There are types and interfaces that can help us extend our typing even to the next level;
 //# sourceMappingURL=presentation.js.map
