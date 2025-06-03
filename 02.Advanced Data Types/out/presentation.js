@@ -62,4 +62,27 @@ class Clock {
         return `Current time: ${this.hour}:${this.minute}`;
     }
 }
+//Extending Interfaces
+//Interfaces can extend classes and other interfaces
+//Extending classes
+//The extended interface inherits all of the members of the class including private and protected members
+//The interface does not inherit the implementations of the members (e.g. mehtod implementations)
+//Extending other interfaces
+//Creates a combination of all interfaces
+//Example: Extending Interfaces
+class Computer {
+    RAM;
+    constructor(r) { this.RAM = r; }
+    showParams() { return `${this.RAM}`; }
+}
+class PC extends Computer {
+    keyboard;
+    CPU;
+    constructor(RAM, CPU, keyboard) { super(RAM); this.CPU = CPU; this.keyboard = keyboard; }
+    showParts() {
+        return `${this.RAM} ${this.CPU} ${this.keyboard}`;
+    }
+}
+let pesho = new PC(16, "Ryzen", "cherry");
+console.log(pesho.showParts());
 //# sourceMappingURL=presentation.js.map
