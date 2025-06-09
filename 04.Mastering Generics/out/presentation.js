@@ -107,5 +107,13 @@ function fullName(obj) {
 }
 let output = fullName({ fName: 'Setoslv', lName: 'Dimitrov' });
 console.log(output); // The full name is Svetoslav Dimitrov
-// { red?: string; blue?: string; }
+// Summary
+// Generics are used to: 
+// Build reusable components
+// Allow flexible constraints on parameters
+// We can use them in: 
+// Functions
+// Classes - their properties and methods
+// Interfaces
+// Mapped Types
 //# sourceMappingURL=presentation.js.map
