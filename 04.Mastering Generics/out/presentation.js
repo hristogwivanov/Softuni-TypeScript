@@ -34,8 +34,8 @@ function echoString(arg) {
 const generatedFn = (arg, param) => {
     return [arg, param];
 };
-const sample = generatedFn('Hello', 'World');
-console.log(sample); // [Hello, World]
+// const sample = generatedFn('Hello', 'World');
+// console.log(sample); // [Hello, World]
 // Generic Classes
 // Generics can be used on: 
 // - The properties of the class
@@ -69,4 +69,43 @@ collection.reverseElements();
 console.log(collection.showElements());
 collection.removeElement('string');
 console.log(collection.showElements());
+class UserInput {
+    first;
+    second;
+    constructor(f, s) {
+        this.first = f;
+        this.second = s;
+    }
+    showBoth() {
+        return `First: ${this.first}, second: ${this.second}`;
+    }
+}
+let sample = new UserInput('Ten', 10);
+// let test = new UserInput(1, true);
+console.log(sample.showBoth()); //First: Ten, second: 10
+class EnumOption {
+    key;
+    value;
+    static counter = 0;
+    constructor(k, v) {
+        this.key = k;
+        this.value = v ?? EnumOption.counter++;
+    }
+    returnPair() { return [this.key, this.value]; }
+}
+let test = new EnumOption('January', 'jan');
+console.log(test.returnPair()); //['January', 'jan']
+let test2 = new EnumOption('January', undefined);
+console.log(test2.returnPair()); //['January', 0]
+let test3 = new EnumOption('February', 2);
+console.log(test.returnPair()); // ['February', 2]
+// GenericTypeConstraints
+// In TypeScript we can make sure that a variable has at least some specific information contained in it
+// ConareINRA ew wndoexws by extends keyword and can be any type including advanced types
+function fullName(obj) {
+    return `The full name is ${obj.fName} ${obj.lName}.`;
+}
+let output = fullName({ fName: 'Setoslv', lName: 'Dimitrov' });
+console.log(output); // The full name is Svetoslav Dimitrov
+// { red?: string; blue?: string; }
 //# sourceMappingURL=presentation.js.map
