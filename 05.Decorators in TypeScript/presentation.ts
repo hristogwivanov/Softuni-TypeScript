@@ -98,17 +98,232 @@ class DerivedClass extends ExampleClass {}
 
 // Example: Overwriting Class Definition
 
-class Person { constructor (public name: string) {  } }
+// class Person { constructor (public name: string) {  } }
 
-@overwrite class Student extends Person {
-    constructor (name: string, public age: number)  {   super(name);    }
+// @overwrite class Student extends Person {
+//     constructor (name: string, public age: number)  {   super(name);    }
+// }
+
+// export function overwrite(constructor: Function) {
+//     return (function () { return { test: 20}} ) as any;
+// }
+
+// let student = new Student('George', 30);
+// console.log(student);   // {test: 20}
+// console.log(student instanceof Person); //false
+// console.log(student instanceof Student); //false
+
+//Example: Extending Class Definition
+
+// @addTitle class Person { constructor(public name: string) { }}
+// //TS Error: Decorator function return type is not assignable to typeof Other
+// // @addTitle class Other { constructor(public lastName: string){   }}
+
+// function addTitle(constructor: Function){
+//     return class extends (constructor as {  new(...args: any[]): Person}){
+//         constructor(...args: any[]){
+//             super('Sir/Madam ' + args[0], ...args.shift());
+//         }
+//     }
+// }
+
+
+// let person = new Person('George');
+// console.log(person.name)
+
+//Example: Generic Class Decorators
+@addTitleAbstract abstract class Test {}
+@addTitleGeneric class Person extends Test { constructor(public name: string) {super();}}
+@addTitleGeneric class Other {constructor(public lastName: string) { }}
+
+function addTitleGeneric <T extends (new (...args: any[]) => {})>(constructor: T) { //Constructor type
+    return class extends constructor {
+        constructor(...args: any[]) { super('Sir/Madam ' + args[0], ...args.shift()); }
+    }
 }
 
-export function overwrite(constructor: Function) {
-    return (function () { return { test: 20}} ) as any;
+function addTitleAbstract<T extends (abstract new (...args: any[])=>{})>(constructor: T) { //Abstract constructor type
+    abstract class Anonymous extends constructor { v = 20;}; return Anonymous;
 }
 
-let student = new Student('George', 30);
-console.log(student);   // {test: 20}
-console.log(student instanceof Person); //false
-console.log(student instanceof Student); //false
+interface Test { v: number}; // need to extend the Test class interface to let TS know about the new property
+let person = new Person('George');
+console.log(person.name)    // Sir/Madam George
+console.log(person.v)   // 20
+
+
+// Method Decorators
+
+// Definition
+// The method decorator function takes three arguments: 
+// target - the parent class
+// key - the name of the function
+// descriptor - the Property Descriptor of the method
+// descriptor.value - the method itself
+
+function disableEnumarable (
+    target: Object, 
+    key: string, 
+    descriptor: PropertyDescriptor) {
+        descriptor.enumerable = false;
+    };
+
+// Example: Method Decorator
+class Num {
+    constructor(private _number: number)    {   }
+    @add10 getNumber() {return this._number; }
+}
+
+function add10(target: Object, key: string, descriptor: PropertyDescriptor) {
+    const original = descriptor.value;
+    descriptor.value = function (...args: any[]) {
+        let result = original.apply(this, args);
+        return result +=10; 
+    };
+    return descriptor;
+};
+
+let num = new Num(20);
+console.log(num.getNumber()); //30
+
+// Accessor Decorators
+// Definition
+// TypeScript does not allow decorators on both the getter and the setter
+// The property Descriptor combines both get and set not each declaration separately
+// Takes the following three arguments
+// - Target
+// The constructor function of the class for a static members
+// The prototype of the class for instance members
+// key - The name of the member
+// descriptor - The Property Descriptor fo the member
+
+// Example: Accessor Decorator
+
+class Point {
+    constructor(private _x: number, private _y: number) { }
+        @double set x(value: number) { this._x = value; }
+        @double set y(value: number) { this._y = value; }
+    }
+
+    function double(target: any, key: string, descriptor: PropertyDescriptor) {
+        let originalSet = descriptor.set;
+        descriptor.set = function(val: any){
+            originalSet?.call(this, val * 2);
+        }
+    };
+
+    let p = new Point(20, 20);
+    console.log(p);
+    p.x = 2; p.y = 3; 
+    console.log(p); // Point {_x: 4, _y: 6}
+
+
+// Example: Static Accessor Decorator
+    
+// class Circle {
+//     constructor(private _radius: number) {  }
+//     @format static get PI() { return 3.1415}
+// }
+
+// function format(target: any, key: string, descriptor: PropertyDescriptor){
+//     let original = descriptor.get;
+//     descriptor.get = function() {
+//         let result = original?.call(this);
+//         return `PI is ${result.toFixed(2)}`;
+//     }
+// };
+
+// let rect = new Circle(5);
+// console.log(Circle.PI);
+
+
+// Property Decorators
+// Definition
+// Property decorator can only be used to observe that a property with specific name has been declared
+// Cannot be used to modify the value of a property
+// The return value of the decorator is also ignored
+// Takes the following two arguments: 
+// - target - the constructor function for static members
+// - the prototype of the class for instance members
+// key - the name of the member
+
+
+// Example: Prperty Decorator
+
+// class Greeter {
+//     @log
+//     private _message: string = 'Hello';
+// }
+
+// function log(target: object, key: string) {
+//     console.log(`Property '${key}' was declared.`)
+//     console.log(` '${target.constructor}' is the constructor`)
+// }
+
+// let greeter = new Greeter(); 
+
+// Parameter decorators
+// Definition
+// Parameter decorators can only be used to observe that a parameter has been declared on a method
+// Cannot be used to modify tha value of the parameter 
+// The return value of the decorator is also ignored
+// Takes the following three arguments: 
+// -target
+//  -The constructor function for static members
+//  -The prototype of the class for instance members
+// key - The name of the parameter
+// index - The index of the parameter in the arguments list
+
+// Example: Parameter Decorator
+
+class Greeter {
+    public greet(@log message: string){
+        return message; 
+    }
+}
+
+function log(target: object, key: string, index: number) {
+    console.log(`Parameter '${key}' was declared.`)
+    console.log(`Index: ${index}`)
+    console.log(`Constructor: ${target.constructor}`)
+}
+
+let greeter = new Greeter(); 
+
+
+// Decorator Factories
+
+// Definition
+// Function that returns a decorator function
+// Gives the flexibility to pass custom data to the decorator function when needed
+
+function enumerable(value: boolean) {
+    return function (   // Decorator Factory
+        target: Object,     //Decorator function
+        propertyKey: string, 
+        descriptor: PropertyDescriptor) {
+            descriptor.enumerable = value;
+        };
+}
+
+// Example: Decorator Factory
+
+class Name {
+    constructor(private _name: string) { }
+    @format('Hello, my name is %s')
+    getName() { return this._name}
+}
+
+function format(stringFormat: string) {
+    return function (target: Object, key: string, descriptor: PropertyDescriptor) {
+        const original = descriptor.value;
+        descriptor.value = function (...args: any[]){
+            let value = original.call(this, ...args);
+            return stringFormat.replace('%s', value);
+        };
+        return descriptor;
+    }
+}
+
+let nam = new Name ('Peter');
+console.log(nam.getName()); // Hello, my name is Peter
