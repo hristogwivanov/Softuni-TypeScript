@@ -55,15 +55,15 @@
 // Subclasses do not inherit the decorators of the super class
 // Every subclass needs to be decorated on its own
 
-function classDecorator(constructor: Function)  {
+function classDecorator(constructor: Function) {
     console.log(`Called on ${constructor.name}`);
 }
 
-@classDecorator
-class ExampleClass {}
-// Called on ExampleClass
+// @classDecorator
+// class ExampleClass {}
+// // Called on ExampleClass
 
-class DerivedClass extends ExampleClass {}
+// class DerivedClass extends ExampleClass {}
 // No output, since decorators are not inheritedю
 
 // Types of Decorators
@@ -132,24 +132,24 @@ class DerivedClass extends ExampleClass {}
 // console.log(person.name)
 
 //Example: Generic Class Decorators
-@addTitleAbstract abstract class Test {}
-@addTitleGeneric class Person extends Test { constructor(public name: string) {super();}}
-@addTitleGeneric class Other {constructor(public lastName: string) { }}
+// @addTitleAbstract abstract class Test {}
+// @addTitleGeneric class Person extends Test { constructor(public name: string) {super();}}
+// @addTitleGeneric class Other {constructor(public lastName: string) { }}
 
-function addTitleGeneric <T extends (new (...args: any[]) => {})>(constructor: T) { //Constructor type
-    return class extends constructor {
-        constructor(...args: any[]) { super('Sir/Madam ' + args[0], ...args.shift()); }
-    }
-}
+// function addTitleGeneric <T extends (new (...args: any[]) => {})>(constructor: T) { //Constructor type
+//     return class extends constructor {
+//         constructor(...args: any[]) { super('Sir/Madam ' + args[0], ...args.shift()); }
+//     }
+// }
 
-function addTitleAbstract<T extends (abstract new (...args: any[])=>{})>(constructor: T) { //Abstract constructor type
-    abstract class Anonymous extends constructor { v = 20;}; return Anonymous;
-}
+// function addTitleAbstract<T extends (abstract new (...args: any[])=>{})>(constructor: T) { //Abstract constructor type
+//     abstract class Anonymous extends constructor { v = 20;}; return Anonymous;
+// }
 
-interface Test { v: number}; // need to extend the Test class interface to let TS know about the new property
-let person = new Person('George');
-console.log(person.name)    // Sir/Madam George
-console.log(person.v)   // 20
+// interface Test { v: number}; // need to extend the Test class interface to let TS know about the new property
+// let person = new Person('George');
+// console.log(person.name)    // Sir/Madam George
+// console.log(person.v)   // 20
 
 
 // Method Decorators
@@ -161,30 +161,31 @@ console.log(person.v)   // 20
 // descriptor - the Property Descriptor of the method
 // descriptor.value - the method itself
 
-function disableEnumarable (
-    target: Object, 
-    key: string, 
+function disableEnumarable(
+    target: Object,
+    key: string,
     descriptor: PropertyDescriptor) {
-        descriptor.enumerable = false;
-    };
-
-// Example: Method Decorator
-class Num {
-    constructor(private _number: number)    {   }
-    @add10 getNumber() {return this._number; }
-}
-
-function add10(target: Object, key: string, descriptor: PropertyDescriptor) {
-    const original = descriptor.value;
-    descriptor.value = function (...args: any[]) {
-        let result = original.apply(this, args);
-        return result +=10; 
-    };
-    return descriptor;
+    descriptor.enumerable = false;
 };
 
-let num = new Num(20);
-console.log(num.getNumber()); //30
+// Example: Method Decorator
+
+// class Num {
+//     constructor(private _number: number) { }
+//     @add10 getNumber() { return this._number; }
+// }
+
+// function add10(target: Object, key: string, descriptor: PropertyDescriptor) {
+//     const original = descriptor.value;
+//     descriptor.value = function (...args: any[]) {
+//         let result = original.apply(this, args);
+//         return result += 10;
+//     };
+//     return descriptor;
+// };
+
+// let num = new Num(20);
+// console.log(num.getNumber()); //30
 
 // Accessor Decorators
 // Definition
@@ -201,25 +202,25 @@ console.log(num.getNumber()); //30
 
 class Point {
     constructor(private _x: number, private _y: number) { }
-        @double set x(value: number) { this._x = value; }
-        @double set y(value: number) { this._y = value; }
+    @double set x(value: number) { this._x = value; }
+    @double set y(value: number) { this._y = value; }
+}
+
+function double(target: any, key: string, descriptor: PropertyDescriptor) {
+    let originalSet = descriptor.set;
+    descriptor.set = function (val: any) {
+        originalSet?.call(this, val * 2);
     }
+};
 
-    function double(target: any, key: string, descriptor: PropertyDescriptor) {
-        let originalSet = descriptor.set;
-        descriptor.set = function(val: any){
-            originalSet?.call(this, val * 2);
-        }
-    };
-
-    let p = new Point(20, 20);
-    console.log(p);
-    p.x = 2; p.y = 3; 
-    console.log(p); // Point {_x: 4, _y: 6}
+let p = new Point(20, 20);
+console.log(p);
+p.x = 2; p.y = 3;
+console.log(p); // Point {_x: 4, _y: 6}
 
 
 // Example: Static Accessor Decorator
-    
+
 // class Circle {
 //     constructor(private _radius: number) {  }
 //     @format static get PI() { return 3.1415}
@@ -277,8 +278,8 @@ class Point {
 // Example: Parameter Decorator
 
 class Greeter {
-    public greet(@log message: string){
-        return message; 
+    public greet(@log message: string) {
+        return message;
     }
 }
 
@@ -288,7 +289,7 @@ function log(target: object, key: string, index: number) {
     console.log(`Constructor: ${target.constructor}`)
 }
 
-let greeter = new Greeter(); 
+let greeter = new Greeter();
 
 
 // Decorator Factories
@@ -300,10 +301,10 @@ let greeter = new Greeter();
 function enumerable(value: boolean) {
     return function (   // Decorator Factory
         target: Object,     //Decorator function
-        propertyKey: string, 
+        propertyKey: string,
         descriptor: PropertyDescriptor) {
-            descriptor.enumerable = value;
-        };
+        descriptor.enumerable = value;
+    };
 }
 
 // Example: Decorator Factory
@@ -311,13 +312,13 @@ function enumerable(value: boolean) {
 class Name {
     constructor(private _name: string) { }
     @format('Hello, my name is %s')
-    getName() { return this._name}
+    getName() { return this._name }
 }
 
 function format(stringFormat: string) {
     return function (target: Object, key: string, descriptor: PropertyDescriptor) {
         const original = descriptor.value;
-        descriptor.value = function (...args: any[]){
+        descriptor.value = function (...args: any[]) {
             let value = original.call(this, ...args);
             return stringFormat.replace('%s', value);
         };
@@ -325,5 +326,120 @@ function format(stringFormat: string) {
     }
 }
 
-let nam = new Name ('Peter');
+let nam = new Name('Peter');
 console.log(nam.getName()); // Hello, my name is Peter
+
+// Multiple Decorators
+// We can chain multiple decorators for each class declaration, method, property, accessor or parameter
+// If multiple decorators / decorator factories exist: 
+// 1. First all factories are called in-order: 
+// log1 -> log2
+// 2. Then all the decorators are applied using composition
+// log1(log2(constructor))
+// @log1()
+// @log2()
+// class Person { constructor(private _age: number = 5){}}
+function log1() {
+    console.log("log1 factory evaluated");
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        console.log("log1 decorator executed")
+    }
+}
+
+function log2() {
+    console.log("log2 factory evaluated");
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        console.log("log2 decorator executed")
+    }
+}
+
+class ExampleClass {
+    @log1() @log2() method() { }
+}
+
+// Complex Composition
+// Decorators are commonly used to create wrapper functions around their targets in order to:
+// Modify input values - in setters or methods
+// Composing decorators that wrap a setter will lead to an extra composition of the wrapper functions that will invert the execution of the decorators again 
+// Modify output values - in getters or methods
+// Composing multile decorators that wrap getters wil keep the original decorator composition execution order
+
+// Example: complex Composition Setter 
+
+// class Num { 
+//     constructor(private _number: number) {}
+//     // (x => x-2) -> (x => x * 2) -> (x => x + 5) -> original setter
+//     @modifyInput((x => x - 2)) @modifyInput((x => x*2)) @modifyInput((x => x + 5))
+//     setNumber(val: number) {this._number = val; }
+//     getNumber() { return this._number; }
+// }
+
+// function modifyInput(mathFunc: (val: number) => number) {
+//     return function (target: Object, key: string, descriptor: PropertyDescriptor){
+//         const original = descriptor.value;
+//         descriptor.value = function (...args: any[]) {
+//             return original.call(this, mathFunc(args[0]))
+//         };
+//     }
+// }
+
+// let a = new Num(5);
+// a.setNumber(5); console.log(a); //{_number: 11} => ((((5)-2)*2)+5)
+
+//Example: Complex Composition Getter
+
+class Num {
+    constructor(private _number: number) {  }
+    setNumber(val: number) { this._number = val; }
+    // original getter => (x => x + 5) -> (x => x * 2) -> (x => x - 2)
+    @modifyOutput((x => x - 2)) @modifyOutput((x => x * 2)) @modifyOutput((x => x + 5))
+    getNumber() { return this._number}
+}
+
+function modifyOutput(mathFunc: (val: number) => number) {
+    return function (target: Object, key: string, descriptor: PropertyDescriptor){
+        const original = descriptor.value;
+        descriptor.value = function (...args: any[]) {
+            let value = original.call(this, ...args);
+            return mathFunc(value);
+        };
+    }
+}
+
+let a = new Num(5); console.log(a.getNumber()); // 18 => ((((5)+5)*2)-2)
+
+
+// Advanced Usage
+
+// Advanced Usages
+// Sometimes we might need some type information exposed at runtime for that we can use the reflect-metadata library
+// npm install reflect-metadata
+// Adds an internal [[Metadata]] property to objects, that holds type information we can call at runtime
+// Requires "emitDecoratorMetadata": true in tsconfig
+// We can use this runtime type information to implement more complex use cases like: 
+// - Dependency Injection
+// - More robust validation
+
+// Example: Reflect-Metadata
+
+import "reflect-metadata";
+
+class Address { constructor (public city: string) {}}
+class Person {
+    constructor (private _address: Address) { }
+    @validate set address(value: Address) { this._address = value; }
+    get address() { return this._address;}
+}
+function validate<T>(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<T>){
+    let set = descriptor.set!;
+    descriptor.set = function (value: T) {
+        let type = Reflect.getMetadata("design: type", target, propertyKey);
+        if(!(value instanceof type)) { throw new TypeError('Invalid type.'); }
+        set.call(this, value);
+    };
+}
+
+let city = new Address('Tokyo');
+let person = new Person(city);
+console.log(person); // {_adddress: Address {city: 'Tokyo'}
+person.address = { city: 'New York'}; // Runtime TypeError: Invalid type. 
