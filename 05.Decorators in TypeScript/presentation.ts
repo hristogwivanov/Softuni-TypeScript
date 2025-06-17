@@ -277,19 +277,19 @@ console.log(p); // Point {_x: 4, _y: 6}
 
 // Example: Parameter Decorator
 
-class Greeter {
-    public greet(@log message: string) {
-        return message;
-    }
-}
+// class Greeter {
+//     public greet(@log message: string) {
+//         return message;
+//     }
+// }
 
-function log(target: object, key: string, index: number) {
-    console.log(`Parameter '${key}' was declared.`)
-    console.log(`Index: ${index}`)
-    console.log(`Constructor: ${target.constructor}`)
-}
+// function log(target: object, key: string, index: number) {
+//     console.log(`Parameter '${key}' was declared.`)
+//     console.log(`Index: ${index}`)
+//     console.log(`Constructor: ${target.constructor}`)
+// }
 
-let greeter = new Greeter();
+// let greeter = new Greeter();
 
 
 // Decorator Factories
@@ -422,24 +422,24 @@ let a = new Num(5); console.log(a.getNumber()); // 18 => ((((5)+5)*2)-2)
 
 // Example: Reflect-Metadata
 
-import "reflect-metadata";
+// import "reflect-metadata";
 
-class Address { constructor (public city: string) {}}
-class Person {
-    constructor (private _address: Address) { }
-    @validate set address(value: Address) { this._address = value; }
-    get address() { return this._address;}
-}
-function validate<T>(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<T>){
-    let set = descriptor.set!;
-    descriptor.set = function (value: T) {
-        let type = Reflect.getMetadata("design: type", target, propertyKey);
-        if(!(value instanceof type)) { throw new TypeError('Invalid type.'); }
-        set.call(this, value);
-    };
-}
+// class Address { constructor (public city: string) {}}
+// class Person {
+//     constructor (private _address: Address) { }
+//     @validate set address(value: Address) { this._address = value; }
+//     get address() { return this._address;}
+// }
+// function validate<T>(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<T>){
+//     let set = descriptor.set!;
+//     descriptor.set = function (value: T) {
+//         let type = Reflect.getMetadata("design: type", target, propertyKey);
+//         if(!(value instanceof type)) { throw new TypeError('Invalid type.'); }
+//         set.call(this, value);
+//     };
+// }
 
-let city = new Address('Tokyo');
-let person = new Person(city);
-console.log(person); // {_adddress: Address {city: 'Tokyo'}
-person.address = { city: 'New York'}; // Runtime TypeError: Invalid type. 
+// let city = new Address('Tokyo');
+// let person = new Person(city);
+// console.log(person); // {_adddress: Address {city: 'Tokyo'}
+// person.address = { city: 'New York'}; // Runtime TypeError: Invalid type. 

@@ -1,3 +1,4 @@
+"use strict";
 // Decorators in TypeScript
 // 1. Introduction to Decorators
 // 2. Syntax and Basic Usage
@@ -11,9 +12,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
 };
 // Introduction to Decorators
 // Definition
@@ -241,23 +239,17 @@ console.log(p); // Point {_x: 4, _y: 6}
 // key - The name of the parameter
 // index - The index of the parameter in the arguments list
 // Example: Parameter Decorator
-class Greeter {
-    greet(message) {
-        return message;
-    }
-}
-__decorate([
-    __param(0, log),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], Greeter.prototype, "greet", null);
-function log(target, key, index) {
-    console.log(`Parameter '${key}' was declared.`);
-    console.log(`Index: ${index}`);
-    console.log(`Constructor: ${target.constructor}`);
-}
-let greeter = new Greeter();
+// class Greeter {
+//     public greet(@log message: string) {
+//         return message;
+//     }
+// }
+// function log(target: object, key: string, index: number) {
+//     console.log(`Parameter '${key}' was declared.`)
+//     console.log(`Index: ${index}`)
+//     console.log(`Constructor: ${target.constructor}`)
+// }
+// let greeter = new Greeter();
 // Decorator Factories
 // Definition
 // Function that returns a decorator function
@@ -390,38 +382,23 @@ console.log(a.getNumber()); // 18 => ((((5)+5)*2)-2)
 // - Dependency Injection
 // - More robust validation
 // Example: Reflect-Metadata
-import "reflect-metadata";
-class Address {
-    city;
-    constructor(city) {
-        this.city = city;
-    }
-}
-class Person {
-    _address;
-    constructor(_address) {
-        this._address = _address;
-    }
-    set address(value) { this._address = value; }
-    get address() { return this._address; }
-}
-__decorate([
-    validate,
-    __metadata("design:type", Address),
-    __metadata("design:paramtypes", [Address])
-], Person.prototype, "address", null);
-function validate(target, propertyKey, descriptor) {
-    let set = descriptor.set;
-    descriptor.set = function (value) {
-        let type = Reflect.getMetadata("design: type", target, propertyKey);
-        if (!(value instanceof type)) {
-            throw new TypeError('Invalid type.');
-        }
-        set.call(this, value);
-    };
-}
-let city = new Address('Tokyo');
-let person = new Person(city);
-console.log(person); // {_adddress: Address {city: 'Tokyo'}
-person.address = { city: 'New York' }; // Runtime TypeError: Invalid type. 
+// import "reflect-metadata";
+// class Address { constructor (public city: string) {}}
+// class Person {
+//     constructor (private _address: Address) { }
+//     @validate set address(value: Address) { this._address = value; }
+//     get address() { return this._address;}
+// }
+// function validate<T>(target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<T>){
+//     let set = descriptor.set!;
+//     descriptor.set = function (value: T) {
+//         let type = Reflect.getMetadata("design: type", target, propertyKey);
+//         if(!(value instanceof type)) { throw new TypeError('Invalid type.'); }
+//         set.call(this, value);
+//     };
+// }
+// let city = new Address('Tokyo');
+// let person = new Person(city);
+// console.log(person); // {_adddress: Address {city: 'Tokyo'}
+// person.address = { city: 'New York'}; // Runtime TypeError: Invalid type. 
 //# sourceMappingURL=presentation.js.map
