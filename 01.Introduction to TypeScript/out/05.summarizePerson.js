@@ -15,4 +15,4 @@ console.log(summarizePerson(12, 'Eliot', 'Des', 20, 'Braylen', ['tennis', 'footb
 console.log(summarizePerson(20, 'Mary', 'Trent', 25, undefined, ['fitness', 'rowing']));
 console.log(summarizePerson(21, 'Joseph', 'Angler', 28));
 console.log(summarizePerson(21, 'Kristine', 'Neva', 23, ''));
-//# sourceMappingURL=05.summarizePerson.js.map
+//# sourceMappingURL=05.SummarizePerson.js.map
